@@ -11,6 +11,16 @@
    <main role="main">
      <div class="album py-5 bg-light">
        <div class="container">
+         {{#if success_message}}
+            <div class="alert alert-success" role="alert" style="margin: 30px 0 ;">
+              {{success_message}}
+            </div>
+          {{/if}}
+          {{#if error_message}}
+            <div class="alert alert-danger" role="alert" style="margin: 30px 0 ;">
+              {{error_message}}
+            </div>
+          {{/if}}
          {{{body}}}
        </div>
      </div>
