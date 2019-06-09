@@ -6,7 +6,8 @@ const flash = require('connect-flash')
 const session = require('express-session')
 const passport = require('./config/passport');
 const methodOverride = require('method-override');
-var port = process.env.PORT || 3000;
+// var port = process.env.PORT || 3000;
+var port = 3000;
 var app = express();
 
 app.engine('handlebars',handlebars({defaultLayout: 'main'}));
