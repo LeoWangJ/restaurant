@@ -18,8 +18,7 @@
     "dialect": "postgres",
     "protocol": "postgres",
     "dialectOptions": {
-        "ssl": true,
-        "socketPath": "/tmp/mysql.sock"
+        "ssl": true
     }
   }
 }
