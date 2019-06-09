@@ -9,8 +9,6 @@ module.exports = (sequelize, DataTypes) => {
     image: DataTypes.STRING
   }, {})
   Restaurant.associate = function (models) {
-    Restaurant.belongsTo(models.Category)
-    Restaurant.hasMany(models.Comment)
   }
   return Restaurant
 }

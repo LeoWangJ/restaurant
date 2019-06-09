@@ -7,7 +7,6 @@ module.exports = (sequelize, DataTypes) => {
     isAdmin: DataTypes.BOOLEAN
   }, {})
   User.associate = function (models) {
-    User.hasMany(models.Comment)
   }
   return User
 }
