@@ -6,6 +6,7 @@ const flash = require('connect-flash')
 const session = require('express-session')
 const passport = require('./config/passport');
 const methodOverride = require('method-override');
+var port = process.env.PORT || 3000;
 var app = express();
 
 app.engine('handlebars',handlebars({defaultLayout: 'main'}));
@@ -24,7 +25,8 @@ app.use((req,res,next)=>{
     res.locals.user = req.user
     next()
 })
-app.listen(3000,()=>{
+
+app.listen(port,()=>{
     db.sequelize.sync();
     console.log('hello');
 })

@@ -3,7 +3,6 @@ const fs = require('fs');
 var Restaurants = db.Restaurant;
 let adminController = {
     getRestaurants: (req, res) =>{
-        console.log('??????')
         return Restaurants.findAll().then(restaurants=>{
             console.log(restaurants)
             return res.render('admin/restaurants',{restaurants:restaurants}) 
