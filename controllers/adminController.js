@@ -4,6 +4,7 @@ const imgur = require('imgur-node-api');
 const IMGUR_CLIENT_ID = "9e13906c7f09bc5";
 
 var Restaurants = db.Restaurant;
+var Users = db.User
 let adminController = {
     getRestaurants: (req, res) =>{
         return Restaurants.findAll().then(restaurants=>{
@@ -103,6 +104,31 @@ let adminController = {
             restaurant.destroy().then(restaurant=>{
                 res.redirect('/admin/restaurants')
             })
+        })
+    },
+    editUser: (req,res) =>{
+        return Users.findAll().then(user=>{
+          return res.render('admin/users',{users:user})
+        })
+    },
+    putUser: (req,res) =>{
+        if(!req.params.id){
+            req.flash('error_messages', "id didn't exist");
+            return res.redirect('back') 
+        }
+
+        Users.findByPk(req.params.id).then(user=>{
+            if(!user){
+                req.flash('error_messages', "user didn't exist");
+                return res.redirect('back') 
+            }else{
+                user.update({
+                    isAdmin:!Boolean(user.isAdmin)
+                }).then(()=>{
+                    req.flash('success_messages', 'user was successfully to update')
+                    return res.redirect('/admin/users')
+                })
+            }
         })
     }
 }
