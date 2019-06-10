@@ -1,10 +1,12 @@
 var db = require('../models');
 const fs = require('fs');
+const imgur = require('imgur-node-api');
+const IMGUR_CLIENT_ID = "9e13906c7f09bc5";
+
 var Restaurants = db.Restaurant;
 let adminController = {
     getRestaurants: (req, res) =>{
         return Restaurants.findAll().then(restaurants=>{
-            console.log(restaurants)
             return res.render('admin/restaurants',{restaurants:restaurants}) 
         })
     },
@@ -18,20 +20,18 @@ let adminController = {
         }
         const {file} = req;
         if(file){
-            fs.readFile(file.path,(err,data) =>{
-                if(err) console.log('Error: ',err)
-                fs.writeFile(`upload/${file.origanalname}`,data,()=>{
-                    return Restaurants.create({
-                        name:req.body.name,
-                        tel:req.body.tel,
-                        address: req.body.address,
-                        opening_hours: req.body.opening_hours,
-                        description: req.body.description,
-                        image:file ? `/upload/${file.originalname}` : null
-                    }).then(restaurant=>{
-                        req.flash('success_messages','restaurant was successfully created');
-                        res.redirect('/admin/restaurants');
-                    })
+            imgur.setClientID(IMGUR_CLIENT_ID);
+            imgur.upload(file.path,(err,img) =>{
+                return Restaurants.create({
+                    name:req.body.name,
+                    tel:req.body.tel,
+                    address: req.body.address,
+                    opening_hours: req.body.opening_hours,
+                    description: req.body.description,
+                    image:file ? img.data.link : null
+                }).then(restaurant=>{
+                    req.flash('success_messages','restaurant was successfully created');
+                    res.redirect('/admin/restaurants');
                 })
             })
         }else{
@@ -65,22 +65,20 @@ let adminController = {
         }
         var {file} = req;
         if(file){
-            fs.readFile(file.path, (err, data) => {
-                if (err) console.log('Error: ', err)
-                fs.writeFile(`upload/${file.originalname}`, data, () => {
-                    return Restaurants.findByPk(req.params.id)
-                    .then((restaurant) => {
-                        restaurant.update({
-                        name: req.body.name,
-                        tel: req.body.tel,
-                        address: req.body.address,
-                        opening_hours: req.body.opening_hours,
-                        description: req.body.description,
-                        image: file ? `/upload/${file.originalname}` : restaurant.image
-                        }).then((restaurant) => {
-                        req.flash('success_messages', 'restaurant was successfully to update')
-                        res.redirect('/admin/restaurants')
-                        })
+            imgur.setClientID(IMGUR_CLIENT_ID);
+            imgur.upload(file.path,(err,img)=>{
+            return Restaurants.findByPk(req.params.id)
+                .then((restaurant) => {
+                    restaurant.update({
+                    name: req.body.name,
+                    tel: req.body.tel,
+                    address: req.body.address,
+                    opening_hours: req.body.opening_hours,
+                    description: req.body.description,
+                    image: file ? img.data.link : restaurant.image
+                    }).then((restaurant) => {
+                    req.flash('success_messages', 'restaurant was successfully to update')
+                    res.redirect('/admin/restaurants')
                     })
                 })
             })
