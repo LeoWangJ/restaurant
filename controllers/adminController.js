@@ -5,9 +5,10 @@ const IMGUR_CLIENT_ID = "9e13906c7f09bc5";
 
 var Restaurants = db.Restaurant;
 var Users = db.User
+var Category = db.Category
 let adminController = {
     getRestaurants: (req, res) =>{
-        return Restaurants.findAll().then(restaurants=>{
+        return Restaurants.findAll({include:[Category]}).then(restaurants=>{
             return res.render('admin/restaurants',{restaurants:restaurants}) 
         })
     },
@@ -50,7 +51,7 @@ let adminController = {
         }
     },
     getRestaurant:(req,res) =>{
-        return Restaurants.findByPk(req.params.id).then(restaurant=>{
+        return Restaurants.findByPk(req.params.id,{include:[Category]}).then(restaurant=>{
             return res.render('admin/restaurant',{restaurant:restaurant})
         })
     },
