@@ -12,7 +12,8 @@ const port = process.env.PORT || 3000
 
 // 設定 view engine 使用 handlebars
 app.engine('handlebars', handlebars({
-  defaultLayout: 'main'
+  defaultLayout: 'main',
+  helpers: require('./config/handlebars-helper')
 }))
 app.set('view engine', 'handlebars')
 
