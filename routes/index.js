@@ -24,6 +24,7 @@ module.exports = (app,passport) => {
     }
     app.get('/',authenticated,(req,res) =>{res.render('restaurants')})
     app.get('/restaurants',authenticated,restController.getRestaurants)
+    app.get('/restaurants/:id',authenticated,restController.getRestaurant)
 
     app.get('/admin',authenticateAdmin,(req,res) =>{res.render('admin/restaurants')})
     app.get('/admin/restaurants',authenticateAdmin,adminController.getRestaurants)
@@ -42,8 +43,8 @@ module.exports = (app,passport) => {
     app.delete('/admin/categories/:id',authenticateAdmin,categoryController.deleteCategory)
     app.get('/signup',userController.signUpPage);
     app.post('/signup',userController.signUp);
-
     app.get('/signin',userController.signInPage);
     app.post('/signin',passport.authenticate('local',{failureRedirect: '/signin', failureFlash: true}),userController.signIn);
     app.get('/logout',userController.logout);
+    
 } 
