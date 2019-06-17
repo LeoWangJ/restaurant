@@ -1,0 +1,24 @@
+<div class="row card" style="flex-direction:row">
+  <div class="col-md-4" >
+    <img class="img-responsive center-block" src="{{user.image}}" style="width: 250px;margin-bottom: 25px;">
+  </div>
+  <div class="col-md-8">
+    <div class="well" >
+      <div>{{user.name}}</div>
+      <div>{{user.email}}</div>
+      <a class="btn btn-primary" href="/users/{{user.id}}/edit">edit</a>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<div class="card">
+
+  <div style="display: flex;padding:30px;">
+  {{#each comments}}
+    <a href="/restaurants/{{this.Restaurant.id}}" style="margin:5px;">
+      <img src="{{this.Restaurant.image}}" alt="Card image cap" width="70px" height="70px">
+    </a>
+  {{/each}}
+  </div>
+</div>
