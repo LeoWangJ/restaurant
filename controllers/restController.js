@@ -45,7 +45,23 @@ let restController = {
     },
     getRestaurant: (req,res) =>{
         Restaurant.findByPk(req.params.id,{include:[Category,{model:Comment,include:User}]}).then(restaurant=>{
+            restaurant.increment('viewCounts',{by:1})
             return res.render('restaurant',{restaurant})
+        })
+    },
+    getFeeds: (req,res) =>{
+        Restaurant.findAll({limit:10, order:[['createdAt','DESC']],include:Category}).then(restaurants=>{
+            Comment.findAll({limit:10, order:[['createdAt','DESC']],include:[Restaurant,User]}).then(comments =>{
+
+                return res.render('feeds', {restaurants:restaurants,comments:comments})
+            })
+        })
+    },
+    getRestaurantDashboard: (req,res) =>{
+        Restaurant.findByPk(req.params.id,{include:[Comment,Category]}).then(restaurant=>{
+            Comment.findAll({where:{RestaurantId:restaurant.id}}).then(comments=>{
+                return res.render('dashboard',{restaurant:restaurant,comments:comments})
+            })
         })
     }
 }
