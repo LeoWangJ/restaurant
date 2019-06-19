@@ -30,6 +30,8 @@ module.exports = (app,passport) => {
     app.get('/restaurants/:id',authenticated,restController.getRestaurant)
     app.post('/comments',authenticated,commentController.postComment)
     app.delete('/comments/:id',authenticateAdmin,commentController.deleteComment)
+    app.post('/favorite/:restaurantId',authenticated,userController.addFavorite)
+    app.delete('/favorite/:restaurantId',authenticateAdmin,userController.deleteFavorite)
 
     app.get('/admin',authenticateAdmin,(req,res) =>{res.render('admin/restaurants')})
     app.get('/admin/restaurants',authenticateAdmin,adminController.getRestaurants)
