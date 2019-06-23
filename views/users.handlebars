@@ -6,19 +6,82 @@
     <div class="well" >
       <div>{{user.name}}</div>
       <div>{{user.email}}</div>
+      <br/>
+      <div>{{commnetsNum}} 已評論餐廳</div>
+      <div>{{FavoritedRestaurantsNum}} 已收藏的餐廳</div>
+      <div>{{FollowingsNum}} followings</div>
+      <div>{{FollowersNum}} followers</div>
       <a class="btn btn-primary" href="/users/{{user.id}}/edit">edit</a>
     </div>
   </div>
 </div>
 <br>
 <br>
-<div class="card">
-
-  <div style="display: flex;padding:30px;">
-  {{#each comments}}
-    <a href="/restaurants/{{this.Restaurant.id}}" style="margin:5px;">
-      <img src="{{this.Restaurant.image}}" alt="Card image cap" width="70px" height="70px">
-    </a>
-  {{/each}}
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card " >
+      <div class="card-header">
+        {{commnetsNum}}已評論餐廳
+      </div>
+      <div  style="display: flex">
+        {{#each user.Comments}}
+        <div style="margin:5px;">
+          <a href="/restaurants/{{this.Restaurant.id}}" style="margin:5px;">
+            <img src="{{this.Restaurant.image}}" alt="Card image cap" width="70px" height="70px">
+          </a>
+        </div>
+        {{/each}}
+      </div>
+    </div>
   </div>
+    <div class="col-sm-6">
+      <div class="card " >
+        <div class="card-header">
+          {{FavoritedRestaurantsNum}}已收藏的餐廳
+        </div>
+        <div  style="display: flex">
+          {{#each user.FavoritedRestaurants}}
+          <div style="margin:5px;">
+            <a href="/restaurants/{{this.id}}" style="margin:5px;">
+              <img src="{{this.image}}" alt="Card image cap" width="70px" height="70px">
+            </a>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+</div>
+<div class="row" style="margin-top: 20px">
+  <div class="col-sm-6">
+    <div class="card " >
+      <div class="card-header">
+        {{FollowingsNum}} followings
+      </div>
+      <div  style="display: flex">
+        {{#each user.Followings}}
+        <div style="margin:5px;">
+          <a href="/users/{{this.id}}" style="margin:5px;">
+            <img src="{{this.image}}" alt="Card image cap" width="70px" height="70px">
+          </a>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card " >
+      <div class="card-header">
+        {{FollowersNum}} followers
+      </div>
+      <div  style="display: flex">
+        {{#each user.Followers}}
+        <div style="margin:5px;">
+          <a href="/users/{{this.id}}" style="margin:5px;">
+            <img src="{{this.image}}" alt="Card image cap" width="70px" height="70px">
+          </a>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+</div>
 </div>

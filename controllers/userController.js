@@ -48,10 +48,21 @@ const UserController = {
         return res.redirect('/signin')
     },
     getUser(req,res){
-        User.findByPk(req.params.id).then(user=>{
-            Comment.findAll({include:Restaurant,where:{ UserId:user.id}}).then(comments=>{
-                return res.render('users',{user:user,comments:comments})
-            })
+        User.findByPk(req.params.id,{
+            include: [
+                {model:Comment,include:Restaurant},
+                {model:Restaurant,as:'FavoritedRestaurants'},
+                {model:Restaurant,as:'LikedRestaurants'},
+                {model:User,as:'Followers'},
+                {model:User,as:'Followings'},
+            ]
+        }).then(user=>{
+            let FollowingsNum = user.Followings.length
+            let FollowersNum = user.Followers.length
+            let FavoritedRestaurantsNum = user.FavoritedRestaurants.length
+            let commnetsNum = user.Comments.length
+            return res.render('users',{user:user,FollowingsNum,FollowersNum,FavoritedRestaurantsNum,commnetsNum})
+            
         })
     },
     editUser(req,res){
