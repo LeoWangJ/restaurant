@@ -3,6 +3,7 @@ let Restaurant = db.Restaurant;
 let Category = db.Category;
 let User = db.User;
 let Comment = db.Comment;
+let Favorite = db.Favorite;
 let pageLimit = 10;
 
 let restController = {
@@ -72,6 +73,23 @@ let restController = {
                 return res.render('dashboard',{restaurant:restaurant,comments:comments})
             })
         })
+    },
+    getTopRestaurant: (req,res) =>{
+        Restaurant.findAll({
+            include:[ 
+                {model: User, as: 'FavoritedUsers'}
+            ]}).then(restaurants=>{
+                console.log(restaurants)
+                restaurants = restaurants.map(restaurant=>({
+                    ...restaurant.dataValues,
+                    FavoriteCount: restaurant.FavoritedUsers.length,
+                    isFavorited: req.user.FavoritedRestaurants.map(d=>d.id).includes(restaurant.id)
+                }))
+                restaurants.sort((a,b)=> b.FavoriteCount - a.FavoriteCount)
+                restaurants = restaurants.slice(0,10);
+
+                return res.render('topRestaurant',{restaurants:restaurants});
+            })
     }
 }
 
